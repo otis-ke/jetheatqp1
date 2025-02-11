@@ -1,0 +1,81 @@
+/* Unique container to isolate styles */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+  }
+  
+  /* Centered box */
+  .auth-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+  }
+  
+  .auth-box h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* Input fields */
+  .auth-box input, 
+  .auth-box select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  /* Unique buttons */
+  .auth-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  /* Login button */
+  .auth-login-btn {
+    background: #4CAF50; /* Green */
+    color: white;
+  }
+  
+  .auth-login-btn:hover {
+    background: #45a049;
+  }
+  
+  /* Toggle link */
+  .auth-toggle {
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .auth-toggle:hover {
+    text-decoration: underline;
+  }
+  
+  /* Forgot password */
+  .auth-box p span {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .auth-box p span:hover {
+    text-decoration: underline;
+  }
+  

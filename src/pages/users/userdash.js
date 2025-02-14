@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./user.css";
 
@@ -10,6 +10,13 @@ function Userdash() {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const userInitial = userData?.firstName?.charAt(0).toUpperCase() || "?";
 
+  // Move logoutUser above useEffect and wrap it with useCallback
+  const logoutUser = useCallback(() => {
+    localStorage.removeItem("loggedInUserId");
+    localStorage.removeItem("userData");
+    navigate("/login", { state: { message: "You have been logged out" } });
+  }, [navigate]);
+
   useEffect(() => {
     const handleBackButton = (event) => {
       event.preventDefault();
@@ -20,15 +27,14 @@ function Userdash() {
         window.history.pushState(null, null, window.location.pathname);
       }
     };
-  
+
     window.addEventListener("popstate", handleBackButton);
     window.history.pushState(null, null, window.location.pathname);
-  
+
     return () => {
       window.removeEventListener("popstate", handleBackButton);
     };
-  }, [logoutUser]); // Add logoutUser here
-  
+  }, [logoutUser]); // Now logoutUser is stable
 
   useEffect(() => {
     // Set greeting based on time
@@ -42,12 +48,6 @@ function Userdash() {
     }
   }, []);
 
-  const logoutUser = () => {
-    localStorage.removeItem("loggedInUserId");
-    localStorage.removeItem("userData");
-    navigate("/login", { state: { message: "You have been logged out" } });
-  };
-
   return (
     <div className="dashboard-container">
       {/* Header */}
@@ -58,11 +58,11 @@ function Userdash() {
         </div>
 
         {/* Right: Logo (Click to Go Home) */}
-        <img 
-          src="https://via.placeholder.com/100x40?text=Logo" 
-          alt="Logo" 
-          className="dashboard-logo" 
-          onClick={() => navigate("/")} 
+        <img
+          src="https://via.placeholder.com/100x40?text=Logo"
+          alt="Logo"
+          className="dashboard-logo"
+          onClick={() => navigate("/")}
         />
 
         {/* Profile Dropdown Menu */}

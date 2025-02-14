@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./login.css";
 import Header from "../../components/header/header";
 
@@ -15,14 +16,13 @@ const firebaseConfig = {
   appId: "1:196742294604:web:715fe57bf6471221b898e9",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 const Login = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current URL path
+  const location = useLocation();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     firstName: "",
@@ -33,14 +33,14 @@ const Login = () => {
     password: "",
   });
   const [message, setMessage] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("loggedInUserId");
-    // Redirect only if user is logged in and is currently on the login page
     if (user && location.pathname === "/login") {
       navigate("/Userdash");
     }
-  }, [navigate, location.pathname]); // Depend on location.pathname
+  }, [navigate, location.pathname]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -52,11 +52,8 @@ const Login = () => {
 
     try {
       if (isLogin) {
-        // Login logic
         const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
         const user = userCredential.user;
-
-        // Fetch user data from Firestore
         const userDoc = await getDoc(doc(db, "users", user.uid));
         if (userDoc.exists()) {
           localStorage.setItem("loggedInUserId", user.uid);
@@ -66,11 +63,8 @@ const Login = () => {
           setMessage("User not found in database.");
         }
       } else {
-        // Sign up logic
         const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
         const user = userCredential.user;
-
-        // Save user data in Firestore
         const userData = {
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -78,14 +72,18 @@ const Login = () => {
           gender: formData.gender,
           email: formData.email,
         };
-
         await setDoc(doc(db, "users", user.uid), userData);
-
         setMessage("Account created successfully. Please login.");
-        setIsLogin(true); // Switch to login form
+        setIsLogin(true);
       }
     } catch (error) {
-      setMessage(error.message);
+      if (error.code === "auth/email-already-in-use") {
+        setMessage("User already exists. Please login.");
+      } else if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+        setMessage("Wrong email or password.");
+      } else {
+        setMessage(error.message);
+      }
     }
   };
 
@@ -111,12 +109,21 @@ const Login = () => {
               </>
             )}
             <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-            <input type="password" name="password" placeholder="Password" required onChange={handleChange} />
-            <button type="submit" className="auth-button auth-login-btn">
-              {isLogin ? "LOGIN" : "SIGN UP"}
-            </button>
+            <div className="password-container">
+              <input
+                type={passwordVisible ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                required
+                onChange={handleChange}
+              />
+              <span className="password-toggle" onClick={() => setPasswordVisible(!passwordVisible)}>
+                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+            <button type="submit" className="auth-button auth-login-btn">{isLogin ? "LOGIN" : "SIGN UP"}</button>
             <p>
-              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+              {isLogin ? "Don't have an account?" : "Already have an account?"} 
               <span className="auth-toggle" onClick={() => setIsLogin(!isLogin)}>
                 {isLogin ? "Create your Account" : "Login here"}
               </span>

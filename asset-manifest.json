@@ -1,9 +1,8 @@
 {
   "files": {
-    "main.css": "/jetheatqp1/static/css/main.623ff1ed.css",
-    "main.js": "/jetheatqp1/static/js/main.93d762ca.js",
+    "main.css": "/jetheatqp1/static/css/main.b35aade5.css",
+    "main.js": "/jetheatqp1/static/js/main.8a7dde5c.js",
     "static/js/453.6f4c6942.chunk.js": "/jetheatqp1/static/js/453.6f4c6942.chunk.js",
-    "static/media/mosque5.jpg": "/jetheatqp1/static/media/mosque5.c1d040f57dd9805a79cb.jpg",
     "static/media/mosque2.jpg": "/jetheatqp1/static/media/mosque2.df16ca86c1943d5131af.jpg",
     "static/media/Quran.webp": "/jetheatqp1/static/media/Quran.0dc499217ab0d70c457a.webp",
     "static/media/tajweed.webp": "/jetheatqp1/static/media/tajweed.7886b689e2b1687a4587.webp",
@@ -24,12 +23,12 @@
     "static/media/words01.webp": "/jetheatqp1/static/media/words01.a81cbbe2f98d333ac63c.webp",
     "static/media/record4.webp": "/jetheatqp1/static/media/record4.baa56174d3eaef17da8e.webp",
     "index.html": "/jetheatqp1/index.html",
-    "main.623ff1ed.css.map": "/jetheatqp1/static/css/main.623ff1ed.css.map",
-    "main.93d762ca.js.map": "/jetheatqp1/static/js/main.93d762ca.js.map",
+    "main.b35aade5.css.map": "/jetheatqp1/static/css/main.b35aade5.css.map",
+    "main.8a7dde5c.js.map": "/jetheatqp1/static/js/main.8a7dde5c.js.map",
     "453.6f4c6942.chunk.js.map": "/jetheatqp1/static/js/453.6f4c6942.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.623ff1ed.css",
-    "static/js/main.93d762ca.js"
+    "static/css/main.b35aade5.css",
+    "static/js/main.8a7dde5c.js"
   ]
 }

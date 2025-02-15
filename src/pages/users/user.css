@@ -82,11 +82,12 @@
   .user-name {
     font-weight: bold;
     font-size: 16px;
+    color: #060475;
   }
   
   .user-email {
     font-size: 14px;
-    color: #666;
+    color: #060475;
   }
   
   .logout-btn {

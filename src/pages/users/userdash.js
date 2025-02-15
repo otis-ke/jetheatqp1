@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./user.css";
+import ReactRecorder from "../../components/ReactRecorder";
+import logo from '../../components/assets/Qp-logo.webp'
 
 function Userdash() {
   const navigate = useNavigate();
@@ -59,7 +61,7 @@ function Userdash() {
 
         {/* Right: Logo (Click to Go Home) */}
         <img
-          src="https://via.placeholder.com/100x40?text=Logo"
+         src={logo}
           alt="Logo"
           className="dashboard-logo"
           onClick={() => navigate("/")}
@@ -82,28 +84,26 @@ function Userdash() {
       {/* Courses Section */}
       <div className="courses-container">
         <div className="course-card">
-          <img src="https://source.unsplash.com/400x250/?quran" alt="Quran Course" />
+          
           <h3>Basic Quran Reading</h3>
           <p>Learn to read the Quran with correct pronunciation.</p>
         </div>
 
         <div className="course-card">
-          <img src="https://source.unsplash.com/400x250/?islamic" alt="Tajweed Course" />
+         
           <h3>Tajweed Course</h3>
           <p>Enhance your Quran recitation with proper Tajweed rules.</p>
         </div>
 
         <div className="course-card">
-          <img src="https://source.unsplash.com/400x250/?mosque" alt="Memorization Course" />
+        
           <h3>Quran Memorization</h3>
           <p>Start your journey to memorizing the Quran with expert guidance.</p>
         </div>
       </div>
-
+      <ReactRecorder />
       {/* Footer */}
-      <footer className="dashboard-footer">
-        QuranPilot E-learning
-      </footer>
+    
     </div>
   );
 }

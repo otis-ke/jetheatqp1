@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./login.css";
@@ -34,6 +34,8 @@ const Login = () => {
   });
   const [message, setMessage] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [showResetForm, setShowResetForm] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("loggedInUserId");
@@ -87,6 +89,20 @@ const Login = () => {
     }
   };
 
+  const handleResetPassword = async () => {
+    if (!resetEmail) {
+      setMessage("Please enter your email.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      setMessage("Password reset email sent. Check your inbox.");
+      setShowResetForm(false);
+    } catch (error) {
+      setMessage(error.message);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -94,41 +110,55 @@ const Login = () => {
         <div className="auth-box">
           <h2>{isLogin ? "Member Login" : "Sign Up"}</h2>
           {message && <p className="auth-message">{message}</p>}
-          <form onSubmit={handleSubmit}>
-            {!isLogin && (
-              <>
-                <input type="text" name="firstName" placeholder="First Name" required onChange={handleChange} />
-                <input type="text" name="lastName" placeholder="Last Name" required onChange={handleChange} />
-                <input type="tel" name="phone" placeholder="Phone Number" required onChange={handleChange} />
-                <select name="gender" required onChange={handleChange}>
-                  <option value="">Select Gender</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
-                </select>
-              </>
-            )}
-            <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
-            <div className="password-container">
+          {showResetForm ? (
+            <div>
               <input
-                type={passwordVisible ? "text" : "password"}
-                name="password"
-                placeholder="Password"
-                required
-                onChange={handleChange}
+                type="email"
+                placeholder="Enter your email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
               />
-              <span className="password-toggle" onClick={() => setPasswordVisible(!passwordVisible)}>
-                {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-              </span>
+              <button onClick={handleResetPassword}>Reset Password</button>
+              <p onClick={() => setShowResetForm(false)}>Back to Login</p>
             </div>
-            <button type="submit" className="auth-button auth-login-btn">{isLogin ? "LOGIN" : "SIGN UP"}</button>
-            <p>
-              {isLogin ? "Don't have an account?" : "Already have an account?"} 
-              <span className="auth-toggle" onClick={() => setIsLogin(!isLogin)}>
-                {isLogin ? "Create your Account" : "Login here"}
-              </span>
-            </p>
-          </form>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              {!isLogin && (
+                <>
+                  <input type="text" name="firstName" placeholder="First Name" required onChange={handleChange} />
+                  <input type="text" name="lastName" placeholder="Last Name" required onChange={handleChange} />
+                  <input type="tel" name="phone" placeholder="Phone Number" required onChange={handleChange} />
+                  <select name="gender" required onChange={handleChange}>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </>
+              )}
+              <input type="email" name="email" placeholder="Email" required onChange={handleChange} />
+              <div className="password-container">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  required
+                  onChange={handleChange}
+                />
+                <span className="password-toggle" onClick={() => setPasswordVisible(!passwordVisible)}>
+                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+              <button type="submit" className="auth-button auth-login-btn">{isLogin ? "LOGIN" : "SIGN UP"}</button>
+              <p onClick={() => setShowResetForm(true)}>Forgot Password?</p>
+              <p>
+                {isLogin ? "Don't have an account?" : "Already have an account?"} 
+                <span className="auth-toggle" onClick={() => setIsLogin(!isLogin)}>
+                  {isLogin ? "Create your Account" : "Login here"}
+                </span>
+              </p>
+            </form>
+          )}
         </div>
       </div>
     </>
